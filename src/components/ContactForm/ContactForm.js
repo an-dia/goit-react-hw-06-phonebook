@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
+import { CSSTransition } from 'react-transition-group';
 import { connect } from 'react-redux';
 import contactsActions from '../../redux/contacts/contacts-actions';
 import PropTypes from 'prop-types';
 import s from './ContactForm.module.css';
 import shortid from 'shortid';
+import Alert from '../Alert';
+import alertStyle from '../../transitionsStyles/fadeAlertStyle.module.css';
 
 class ContactForm extends Component {
   static propTypes = {
@@ -13,6 +16,8 @@ class ContactForm extends Component {
   state = {
     name: '',
     number: '',
+    error: false,
+    textAlert: '',
   };
 
   inputNameId = shortid.generate();
@@ -22,9 +27,31 @@ class ContactForm extends Component {
     const { name, number } = this.state;
     e.preventDefault();
 
+    if (name === '') {
+      this.showAlert('Please enter your contact name!');
+      return;
+    }
+
+    if (number === '') {
+      this.showAlert('Please enter the contact phone number!');
+      return;
+    }
+
+     if (this.props.contacts.some(contact => contact.name === name)) {
+       this.showAlert(`${name} is already in contacts`);
+       return;
+    }
+
     this.props.onSubmit(name, number);
     this.reset();
   };
+
+  showAlert = (text) => {
+    this.reset();
+    this.setState({ error: true, textAlert: text });
+    setTimeout(() => this.setState({ error: false}), 2000);
+ 
+}
 
   reset = () => {
     this.setState({ name: '', number: '' });
@@ -38,8 +65,15 @@ class ContactForm extends Component {
   };
 
   render() {
+    const { error, textAlert } = this.state;
+
     return (
-      <form className={s.form} onSubmit={this.handleSubmit}>
+      <>
+        <CSSTransition in={error} classNames={alertStyle} timeout={250} unmountOnExit>
+          <Alert text={textAlert}/>
+        </CSSTransition>
+
+        <form className={s.form} onSubmit={this.handleSubmit}>
         <label className={s.label} htmlFor={this.inputNameId}>
           {' '}
           Name{' '}
@@ -66,13 +100,19 @@ class ContactForm extends Component {
         />
         <button className={s.button}>Add contact</button>
       </form>
+      </>
+      
     );
   }
 }
+
+const mapStateToProps = state => ({
+  contacts: state.contacts.items,
+});
 
 const mapDispatchToProps = dispatch => ({
   onSubmit: (name, number) => dispatch(contactsActions.addContact(name, number))
 });
 
-export default connect(null, mapDispatchToProps)(ContactForm);
+export default connect(mapStateToProps, mapDispatchToProps)(ContactForm);
 

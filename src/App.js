@@ -1,18 +1,19 @@
 import React, { Component } from 'react';
 import { CSSTransition } from 'react-transition-group';
+import { connect } from 'react-redux';
 import appearFormStyles from './transitionsStyles/appearFormStyles.module.css';
 import fadeStyles from './transitionsStyles/fade.module.css';
 import searchFadeStyles from './transitionsStyles/searchFadeStyles.module.css';
-import shortid from 'shortid';
+// import shortid from 'shortid';
 import Container from './components/Container';
 import Title from './components/Title';
 import ContactForm from './components/ContactForm';
 import Filter from './components/Filter';
 import ContactList from './components/ContactList';
-import Alert from './components/Alert';
-import alertStyle from './transitionsStyles/fadeAlertStyle.module.css';
+// import Alert from './components/Alert';
+// import alertStyle from './transitionsStyles/fadeAlertStyle.module.css';
 
-export default class App extends Component {
+ class App extends Component {
   state = {
     // contacts: [
     //   // { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
@@ -21,24 +22,24 @@ export default class App extends Component {
     //   // { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
     // ],
     // filter: '',
-    error: false,
-    textAlert: '',
+    // error: false,
+    // textAlert: '',
   };
 
-    componentDidMount() {
-    const contacts = localStorage.getItem('contacts');
-    const parsedContacts = JSON.parse(contacts);
+  //   componentDidMount() {
+  //   const contacts = localStorage.getItem('contacts');
+  //   const parsedContacts = JSON.parse(contacts);
 
-    if (parsedContacts) {
-      this.setState({ contacts: parsedContacts });
-    }
-  }
+  //   if (parsedContacts) {
+  //     this.setState({ contacts: parsedContacts });
+  //   }
+  // }
 
-  componentDidUpdate(prevProps, prevState) {
-    if (this.state.contacts !== prevState.contacts) {
-      localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
-    }
-  }
+  // componentDidUpdate(prevProps, prevState) {
+  //   if (this.state.contacts !== prevState.contacts) {
+  //     localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
+  //   }
+  // }
 
   // addContact = (name, number) => {
   //   const contact = {
@@ -60,11 +61,11 @@ export default class App extends Component {
   //   }
   // };
 
-  showAlert = (text) => {
-    this.setState({ error: true, textAlert: text });
-    setTimeout(() => this.setState({ error: false}), 2000);
+//   showAlert = (text) => {
+//     this.setState({ error: true, textAlert: text });
+//     setTimeout(() => this.setState({ error: false}), 2000);
  
-}
+// }
 
   // deleteContact = contactId => {
   //   this.setState(prevState => ({
@@ -86,29 +87,35 @@ export default class App extends Component {
 
 
   render() {
-    const { error, textAlert } = this.state;
+    // const { error, textAlert } = this.state;
     // const visibleContacts = this.getVisibleContacts();
 
     return (
       <Container>
-        <CSSTransition in={error} classNames={alertStyle} timeout={250} unmountOnExit>
+        {/* <CSSTransition in={error} classNames={alertStyle} timeout={250} unmountOnExit>
           <Alert text={textAlert}/>
-        </CSSTransition>
+        </CSSTransition> */}
         <Title title="Phonebook" level={1} />
         <CSSTransition in={true} appear={true} timeout={500} classNames={appearFormStyles} unmountOnExit>
           <ContactForm  />
         </CSSTransition>
         <Title title="Contacts" level={2} />
-        {/* <CSSTransition in={visibleContacts.length !== 0} classNames={searchFadeStyles} timeout={500} unmountOnExit> */}
+        <CSSTransition in={this.props.contacts.length !== 0} classNames={searchFadeStyles} timeout={500} unmountOnExit>
           <Filter  />
-        {/* </CSSTransition> */}
-        {/* <CSSTransition in={visibleContacts.length !== 0} classNames={fadeStyles} timeout={250} unmountOnExit> */}
+        </CSSTransition>
+        <CSSTransition in={this.props.contacts.length !== 0} classNames={fadeStyles} timeout={250} unmountOnExit>
           <ContactList  />
-        {/* </CSSTransition> */}
+        </CSSTransition>
       </Container>
     );
   }
 }
+
+const mapStateToProps = state => ({
+  contacts: state.contacts.items,
+});
+
+export default connect(mapStateToProps)(App)
 
 // onSubmit={this.addContact}
 // contacts={visibleContacts} onDeleteContact={this.deleteContact}
