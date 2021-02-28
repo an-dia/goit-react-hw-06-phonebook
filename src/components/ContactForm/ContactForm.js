@@ -75,8 +75,9 @@ class ContactForm extends Component {
 
         <form className={s.form} onSubmit={this.handleSubmit}>
         <label className={s.label} htmlFor={this.inputNameId}>
-          {' '}
-          Name{' '}
+          <span>
+            Name   
+          </span>
         </label>
         <input
           className={s.input}
@@ -84,11 +85,14 @@ class ContactForm extends Component {
           id={this.inputNameId}
           value={this.state.name}
           name="name"
+          placeholder="Enter your name"
+          // required
           onChange={this.handlerChange}
         />
         <label className={s.label} htmlFor={this.inputNumberId}>
-          {' '}
-          Number{' '}
+          <span>
+            Number   
+          </span>
         </label>
         <input
           className={s.input}
@@ -96,6 +100,7 @@ class ContactForm extends Component {
           id={this.inputNumberId}
           value={this.state.number}
           name="number"
+          placeholder="Enter your number"
           onChange={this.handlerChange}
         />
         <button className={s.button}>Add contact</button>

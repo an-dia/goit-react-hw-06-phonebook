@@ -9,10 +9,17 @@ const Filter = ({ name, onChange }) => {
   return (
     <div className={s.filterWrapper}>
       <label className={s.label} htmlFor={inputFilterId}>
-        {' '}
-        Find contacts by name{' '}
+        <span>
+          Find contacts by name
+        </span>
       </label>
-      <input className={s.input} type="text" id={inputFilterId} value={name} onChange={onChange} />
+      <input
+        className={s.input}
+        type="text"
+        placeholder="Search"
+        id={inputFilterId}
+        value={name}
+        onChange={onChange} />
     </div>
   );
 };
