@@ -10,6 +10,7 @@ const addContact = createAction('contacts/add', (name, number) => ({
 }));
 
 const deleteContact = createAction('contacts/delete');
+const clearFilter = createAction('contacts/clearFilter');
 const changeFilter = createAction('contacts/changeFilter');
 
-export default { addContact, deleteContact, changeFilter };
+export default { addContact, deleteContact, clearFilter, changeFilter };

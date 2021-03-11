@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import s from './Filter.module.css';
 import shortid from 'shortid';
 
-const Filter = ({ name, onChange }) => {
+const Filter = ({ name, onChange, clearFilter }) => {
   let inputFilterId = shortid.generate();
   return (
     <div className={s.filterWrapper}>
@@ -19,7 +19,9 @@ const Filter = ({ name, onChange }) => {
         placeholder="Search"
         id={inputFilterId}
         value={name}
-        onChange={onChange} />
+        onChange={onChange}
+        clearFilter={clearFilter}
+      />
     </div>
   );
 };
@@ -35,6 +37,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = dispatch => ({
   onChange: event => dispatch(contactsActions.changeFilter(event.target.value)),
+  clearFilter: () => dispatch(contactsActions.clearFilter('')),
 });
 
 

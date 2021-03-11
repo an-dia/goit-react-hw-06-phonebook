@@ -11,8 +11,9 @@ import Title from './components/Title';
 import ContactForm from './components/ContactForm';
 import Filter from './components/Filter';
 import ContactList from './components/ContactList';
+import contactsAction from './redux/contacts/contacts-actions';
 
-const App = ({ contacts }) => {
+const App = ({ contacts, clearFilter }) => {
   return (
     <Container>
       <div className={s.Wrapper}>
@@ -21,7 +22,7 @@ const App = ({ contacts }) => {
           <ContactForm  />
         {/* </CSSTransition> */}
         <Title title="Contacts" level={2} />
-        <CSSTransition in={contacts.length > 1 } classNames={searchFadeStyles} timeout={250} unmountOnExit>
+        <CSSTransition in={contacts.length > 1 } classNames={searchFadeStyles} timeout={250} unmountOnExit  onExit={() => clearFilter()}>
           <Filter  />
         </CSSTransition>
         <CSSTransition in={contacts.length !== 0} classNames={fadeStyles} timeout={250} unmountOnExit>
@@ -36,6 +37,12 @@ const mapStateToProps = state =>({
   contacts: state.contacts.items,
 });
 
+const mapDispatchToProps = dispatch => {
+  return {
+    clearFilter: () => dispatch(contactsAction.changeFilter('')),
+  };
+};
+
 App.propTypes = {
   contacts: PropTypes.arrayOf(
     PropTypes.shape({
@@ -46,7 +53,7 @@ App.propTypes = {
   ),
 };
 
-export default connect(mapStateToProps, null)(App)
+export default connect(mapStateToProps, mapDispatchToProps)(App)
 
 // onSubmit={this.addContact}
 // contacts={visibleContacts} onDeleteContact={this.deleteContact}

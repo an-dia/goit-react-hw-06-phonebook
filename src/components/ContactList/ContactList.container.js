@@ -3,9 +3,11 @@ import contactsActions from '../../redux/contacts/contacts-actions';
 import ContactList from './ContactList';
 
 const getVisibleContacts = (allContacts, filter) => {
-    const normalizedFilter = filter.toLowerCase();
-
-    return allContacts.filter(({name}) => name.toLowerCase().includes(normalizedFilter));
+  const normalizedFilter = filter.toLowerCase();
+  
+  let contacts = allContacts.filter(({name}) => name.toLowerCase().includes(normalizedFilter));
+     if (!contacts.length) contacts = allContacts;
+    return contacts
   };
 
 const mapStateToProps = ({contacts: {items, filter}}) => ({
