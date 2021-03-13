@@ -6,7 +6,7 @@ const getVisibleContacts = (allContacts, filter) => {
   const normalizedFilter = filter.toLowerCase();
   
   let contacts = allContacts.filter(({name}) => name.toLowerCase().includes(normalizedFilter));
-     if (!contacts.length) contacts = allContacts;
+    //  if (!contacts.length) contacts = allContacts;
     return contacts
   };
 
